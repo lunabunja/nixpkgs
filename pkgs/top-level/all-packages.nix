@@ -5641,6 +5641,8 @@ with pkgs;
       netbsd.headers
     else if libc == "cygwin" then
       cygwin.newlib-cygwin-headers
+    else if libc == "mlibc" then
+      mlibc-headers
     else
       null;
 
@@ -5673,6 +5675,8 @@ with pkgs;
       newlib-nano
     else if libc == "musl" then
       musl
+    else if libc == "mlibc" then
+      mlibc
     else if libc == "msvcrt" then
       if stdenv.hostPlatform.isMinGW then windows.mingw_w64 else windows.sdk
     else if libc == "ucrt" then
