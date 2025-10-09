@@ -34,6 +34,8 @@ stdenv.mkDerivation {
     cp ${configGuess} ./config.guess
     cp ${configSub} ./config.sub
     chmod +w ./config.sub ./config.guess
+    sed -i 's/netbsd\*-eabi\*/netbsd\*-eabi\* | netbsd\*-mlibc\*/' ./config.sub
+    sed -i 's/kopensolaris\*-gnu\*-/kopensolaris\*-gnu\*- | netbsd-mlibc\*-/' ./config.sub
     runHook postUnpack
   '';
 
