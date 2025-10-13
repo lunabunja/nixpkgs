@@ -16,6 +16,7 @@ in
   perl,
   runCommand,
   zlib,
+  updateAutotoolsGnuConfigScriptsHook,
 
   enableGold ? withGold stdenv.targetPlatform,
   enableGoldDefault ? false,
@@ -145,6 +146,7 @@ stdenv.mkDerivation (finalAttrs: {
   nativeBuildInputs = [
     bison
     perl
+    updateAutotoolsGnuConfigScriptsHook
   ]
   ++ lib.optionals buildPlatform.isDarwin [
     autoconf269
