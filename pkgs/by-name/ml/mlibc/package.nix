@@ -4,6 +4,7 @@
   stdenvNoCC,
   stdenvNoLibc,
   fetchFromGitHub,
+  fetchpatch,
   frigg,
   libsmarter,
   meson,
@@ -25,6 +26,13 @@ stdenv.mkDerivation (finalAttrs: {
     rev = "368a00fa3ab482a76fbc2fb04afc188c6ff2407b";
     sha256 = "sha256-1TxKAdkOOzkvW/M78SoDBZtSmMTbJCEcxrq1E5rwvFs=";
   };
+
+  patches = [
+    (fetchpatch {
+      url = "https://github.com/managarm/mlibc/pull/1478.patch";
+      hash = "";
+    })
+  ];
 
   depsBuildBuild = [
     buildPackages.stdenv.cc
@@ -98,6 +106,7 @@ stdenv.mkDerivation (finalAttrs: {
       "m68k-linux"
       "riscv64-linux"
       "x86_64-linux"
+      "x86_64-netbsd"
     ];
     license = with lib.licenses; [ mit ];
     maintainers = with lib.maintainers; [
