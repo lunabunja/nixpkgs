@@ -19,7 +19,7 @@
   sharedLibraryLoader ?
     if libc == null then
       null
-    else if stdenvNoCC.targetPlatform.isNetBSD then
+    else if (stdenvNoCC.targetPlatform.isNetBSD && !stdenvNoCC.targetPlatform.isMlibc) then
       if !(targetPackages ? netbsd) then
         netbsd.ld_elf_so
       else if libc != targetPackages.netbsd.headers then
