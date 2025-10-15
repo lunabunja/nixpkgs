@@ -58,6 +58,7 @@ stdenv.mkDerivation (finalAttrs: {
   dontPatchELF = true;
 
   mesonBuildType = "release";
+  mesonAutoFeatures = "auto";
   mesonFlags = [
     "-Ddefault_library=both"
     "-Dlinux_kernel_headers=${linuxHeaders}/include"
