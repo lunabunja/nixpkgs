@@ -15,6 +15,23 @@
 }:
 let
   stdenv = if headersOnly then stdenvNoCC else stdenvNoLibc;
+
+  needsLinuxHeaders =
+    !headersOnly
+    && {
+      linux = true;
+      netbsd = false;
+    }
+    .${stdenv.hostPlatform.parsed.kernel.name}
+      or (throw "Unsupported kernel ${stdenv.hostPlatform.parsed.kernel.name}");
+
+  defaultLibrary =
+    {
+      linux = "both";
+      netbsd = "static";
+    }
+    .${stdenv.hostPlatform.parsed.kernel.name}
+      or (throw "Unsupported kernel ${stdenv.hostPlatform.parsed.kernel.name}");
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "mlibc${lib.optionalString headersOnly "-headers"}";
@@ -60,11 +77,11 @@ stdenv.mkDerivation (finalAttrs: {
   mesonBuildType = "release";
   mesonAutoFeatures = "auto";
   mesonFlags = [
-    "-Ddefault_library=both"
-    "-Dlinux_kernel_headers=${linuxHeaders}/include"
+    "-Ddefault_library=${defaultLibrary}"
     "-Dbuild_tests=false"
     "-Duse_freestnd_hdrs=disabled"
   ]
+  ++ lib.optional needsLinuxHeaders "-Dlinux_kernel_headers=${linuxHeaders}/include"
   ++ lib.optional headersOnly "-Dheaders_only=true";
 
   postInstall =
@@ -73,11 +90,11 @@ stdenv.mkDerivation (finalAttrs: {
       # we don't use it.
       rm $out/bin/mlibc-gcc $out/lib/mlibc-gcc.specs
     ''
-    + ''
+    + lib.optionalString needsLinuxHeaders ''
       # some mlibc headers depend on linux headers
       # scsi/* is provided by mlibc
       find ${linuxHeaders}/include -maxdepth 1 ! -name 'scsi' -exec ln -s {} $dev/include \;
-
+    '' + ''
       # make sure $out exists
       mkdir -p $out
     '';
