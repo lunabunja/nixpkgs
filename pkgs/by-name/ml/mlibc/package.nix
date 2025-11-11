@@ -85,7 +85,7 @@ stdenv.mkDerivation (finalAttrs: {
   ++ lib.optional headersOnly "-Dheaders_only=true";
 
   postInstall =
-    lib.optionalString (!headersOnly) ''
+    lib.optionalString (!headersOnly && stdenv.hostPlatform.isLinux) ''
       # This mlibc-gcc uses a specs file to wrap the host's one. It's a hack,
       # we don't use it.
       rm $out/bin/mlibc-gcc $out/lib/mlibc-gcc.specs
