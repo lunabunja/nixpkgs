@@ -18,7 +18,7 @@ index 7bc4307161687..8ebd90eb91699 100644
      os_include_dir="os/bsd/freebsd"
      ;;
 -  linux-musl*)
-+  linux-musl* | linux-mlibc*)
++  linux-musl* | linux-mlibc* | netbsd*-mlibc*)
      os_include_dir="os/generic"
      ;;
    gnu* | linux* | kfreebsd*-gnu | uclinux*)
