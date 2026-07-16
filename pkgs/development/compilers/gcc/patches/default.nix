@@ -127,6 +127,7 @@ optionals noSysDirs (
   # Set DEFAULT_LIBC=LIBC_MLIBC for *-mlibc* targets and define `__mlibc__`,
   # so software can detect mlibc.
   ./add-mlibc-libc.patch
+  ./add-netbsd-mlibc.patch
 ]
 
 ## Darwin

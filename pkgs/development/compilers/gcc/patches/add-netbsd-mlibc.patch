@@ -1,0 +1,28 @@
+diff -Naur gcc-15.2.0/gcc/config/netbsd.h gcc-15.2.0-netbsd-mlibc/gcc/config/netbsd.h
+--- gcc-15.2.0/gcc/config/netbsd.h      2025-08-08 09:51:40.599350224 +0300
++++ gcc-15.2.0-netbsd-mlibc/gcc/config/netbsd.h 2026-07-17 00:05:48.006543736 +0300
+@@ -23,6 +23,8 @@
+     {						\
+       builtin_define ("__NetBSD__");		\
+       builtin_define ("__unix__");		\
++      if (DEFAULT_LIBC == LIBC_MLIBC)		\
++        builtin_define ("__mlibc__");		\
+       builtin_assert ("system=bsd");		\
+       builtin_assert ("system=unix");		\
+       builtin_assert ("system=NetBSD");		\
+
+diff -Naur gcc-15.2.0/gcc/config.gcc gcc-15.2.0-netbsd-mlibc/gcc/config.gcc
+--- gcc-15.2.0/gcc/config.gcc   2025-08-08 09:51:40.435347488 +0300
++++ gcc-15.2.0-netbsd-mlibc/gcc/config.gcc      2026-07-17 00:04:28.565441356 +0300
+@@ -982,6 +982,11 @@
+   case ${enable_threads} in
+     "" | yes | posix) thread_file='posix' ;;
+   esac
++  case "${target}" in
++    *-*-*mlibc*)
++      tm_defines="$tm_defines DEFAULT_LIBC=LIBC_MLIBC"
++      ;;
++  esac
+   nbsd_tm_file="netbsd.h netbsd-stdint.h netbsd-elf.h"
+   default_use_cxa_atexit=yes
+   target_has_targetdm=yes
