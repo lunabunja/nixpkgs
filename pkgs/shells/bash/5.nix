@@ -126,6 +126,11 @@ lib.warnIf (withDocs != null)
       # replaced on mlibc targets because it isn't a weak symbol.
       "bash_cv_func_strchrnul_works=yes"
     ]
+    ++ lib.optionals (stdenv.hostPlatform.isNetBSD && stdenv.hostPlatform.isMlibc) [
+      # mlibc's printf is POSIX compliant, but bash assumes it's not because of
+      # the NetBSD target.
+      "gt_cv_func_printf_posix=yes"
+    ]
     ++ lib.optionals stdenv.hostPlatform.isCygwin [
       "bash_cv_dev_stdin=present"
       "bash_cv_dev_fd=standard"
